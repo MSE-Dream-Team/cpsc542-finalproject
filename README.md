@@ -1,14 +1,13 @@
-# Apollo tutorial
+# CPSC 542 - Software Verfication and Validation
 
 This is the fullstack app for the [Apollo tutorial](http://apollographql.com/docs/tutorial/introduction.html). 🚀
 
 ## File structure
 
-The app is split out into two folders:
-- `start`: Starting point for the tutorial
-- `final`: Final version
+The app is in the main folder:
+- `main`: Final version
 
-From within the `start` and `final` directories, there are two folders (one for `server` and one for `client`).
+From within `main` directory, there are two folders (one for `server` and one for `client`).
 
 ## Installation
 
@@ -22,4 +21,14 @@ and
 
 ```bash
 cd final/client && npm i && npm start
+```
+
+To run tests, run these commands:
+
+```bash
+npm run test
+```
+
+```bash
+npm run test -- --coverage
 ```
