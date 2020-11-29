@@ -1,6 +1,7 @@
 # CPSC 542 - Software Verfication and Validation
 
 This is the fullstack app for the [Apollo tutorial](http://apollographql.com/docs/tutorial/introduction.html). 🚀
+Link to origin project: https://github.com/apollographql/fullstack-tutorial.
 
 ## File structure
 
