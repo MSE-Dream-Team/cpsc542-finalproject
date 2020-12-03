@@ -1,4 +1,6 @@
-const { Builder, By } = require("selenium-webdriver");
+const { until, Builder, By } = require("selenium-webdriver");
+
+jest.setTimeout(30000); // ugly hack
 
 describe("Selenium Login Tests", () => {
   let driver;
@@ -26,23 +28,40 @@ describe("Selenium Login Tests", () => {
   }, 10000);
 
   // finds button by href value
-  const getButtonByHref = async (hrefVal) => {
+  const getElementByHref = async (hrefVal) => {
     const elements = await driver.findElements(By.tagName("a"));
     for (var i = 0; i < elements.length; ++i) {
-        const attribute = await elements[i].getAttribute("href");
-        console.log(attribute);
-        if (attribute.includes(hrefVal)) {
-            return elements[i];
-        }
+      const attribute = await elements[i].getAttribute("href");
+      if (attribute.includes(hrefVal)) {
+        return elements[i];
+      }
     }
     return null;
   };
 
   it("Add Single Item", async () => {
-        const cartButton = await getButtonByHref("crt");
-        if (!cartButton) {
-            throw new Error("Cart Button not found")
-        }
-        cartButton.click();
+    // wait until the trips are displayed
+    await driver.wait(until.elementLocated(By.className("css-10q0vj5")), 5000);
+
+    const starLink = await getElementByHref("109"); // starLink = launch-109
+    if (!starLink) throw new Error("Launch 109 not found");
+    starLink.click();
+
+    await new Promise((res) =>
+      setTimeout(() => {
+        console.log("Why don't I run?");
+        expect(true).toBe(true);
+        res();
+      }, 1000)
+    ); // wait one second to avoid 'stale' error`
+
+    // add starLink to cart
+
+    // navigate to cart
+    const cartButton = await getElementByHref("cart");
+    if (!cartButton) throw new Error("Cart Button not found");
+    cartButton.click();
+
+    // expect one item
   });
 });
