@@ -22,8 +22,27 @@ describe("Selenium Login Tests", () => {
 
   // close the driver after all tests have completed
   afterAll(async () => {
-    await driver.close();
+    // await driver.close();
   }, 10000);
 
-  it("initial", async () => {}); // temporary
+  // finds button by href value
+  const getButtonByHref = async (hrefVal) => {
+    const elements = await driver.findElements(By.tagName("a"));
+    for (var i = 0; i < elements.length; ++i) {
+        const attribute = await elements[i].getAttribute("href");
+        console.log(attribute);
+        if (attribute.includes(hrefVal)) {
+            return elements[i];
+        }
+    }
+    return null;
+  };
+
+  it("Add Single Item", async () => {
+        const cartButton = await getButtonByHref("crt");
+        if (!cartButton) {
+            throw new Error("Cart Button not found")
+        }
+        cartButton.click();
+  });
 });
