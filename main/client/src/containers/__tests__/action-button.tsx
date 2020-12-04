@@ -1,4 +1,5 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 
 import { renderApollo, cleanup } from '../../test-utils';
 import ActionButton from '../action-button';
@@ -10,6 +11,10 @@ describe('action button', () => {
 
   it('renders without error', () => {
     const { getByTestId } = renderApollo(<ActionButton />);
+    const shallowWrapperTrue = shallow(<ActionButton isBooked={true} id={'1'}/>);
+    const shallowWrapperFalse = shallow(<ActionButton isBooked={false} id={'2'}/>);
+    expect(shallowWrapperTrue.text()).toEqual('<CancelTripButton />')
+    expect(shallowWrapperFalse.text()).toEqual('<ToggleTripButton />')
     expect(getByTestId('action-button')).toBeTruthy();
   });
 
