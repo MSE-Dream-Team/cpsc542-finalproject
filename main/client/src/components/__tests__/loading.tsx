@@ -1,6 +1,7 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 
-import { render, cleanup } from '../../test-utils';
+import { cleanup } from '../../test-utils';
 import Loading from '../loading';
 
 describe('Loading', () => {
@@ -8,6 +9,13 @@ describe('Loading', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    render(<Loading />);
+    // This is the old test
+    // render(<Loading />);
+
+    // New tests
+    const shallowWrapper = shallow(<Loading />);
+
+    expect(shallowWrapper.find('ForwardRef(SvgLogo)').length).toEqual(1);
+    expect(shallowWrapper.find('.css-kahotv').length).toEqual(1);
   });
 });

@@ -14,7 +14,6 @@ describe('Login Form - using enzyme', () => {
     // render(<LoginForm login={() => {}}/>);
 
     // This is the new enzyme test
-
     const shallowWrapper = shallow(<LoginForm />);
 
     expect(shallowWrapper.exists('Styled(div)')).toBe(true);

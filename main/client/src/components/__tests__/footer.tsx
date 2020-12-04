@@ -1,4 +1,5 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 
 import { renderApollo, cleanup } from '../../test-utils';
 import Footer from '../footer';
@@ -8,6 +9,17 @@ describe('Footer', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    renderApollo(<Footer />);
+    // This is the old test
+    // renderApollo(<Footer />);
+
+    // New tests
+    const shallowWrapper = shallow(<Footer />);
+
+    expect(shallowWrapper.find('Styled(footer)').length).toEqual(1);
+    expect(shallowWrapper.find('Styled(Link)').length).toEqual(3);
+    expect(shallowWrapper.find('[to="/"]').exists()).toBe(true);
+    expect(shallowWrapper.find('[to="/cart"]').exists()).toBe(true);
+    expect(shallowWrapper.find('[to="/profile"]').exists()).toBe(true);
+    expect(shallowWrapper.find('LogoutButton').length).toEqual(1);
   });
 });
