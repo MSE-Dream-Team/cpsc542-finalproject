@@ -14,7 +14,6 @@ describe('Login Form - using enzyme', () => {
     // render(<LoginForm login={() => {}}/>);
 
     // This is the new enzyme test
-
     const shallowWrapper = shallow(<LoginForm />);
     const mountWrapper = mount(<LoginForm />);
     const renderWrapper = render(<LoginForm />);
@@ -23,7 +22,5 @@ describe('Login Form - using enzyme', () => {
     expect(shallowWrapper.find('[data-testid="login-input"]').exists()).toBe(true);
     expect(renderWrapper.find('button').text()).toEqual("Log in");
     expect(renderWrapper.find('h1').text()).toEqual("Space Explorer");
-
-
   });
 });

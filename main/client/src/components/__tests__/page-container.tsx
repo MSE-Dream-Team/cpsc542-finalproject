@@ -1,6 +1,7 @@
 import React from 'react';
+import { shallow } from 'enzyme';
 
-import { render, cleanup } from '../../test-utils';
+import { cleanup } from '../../test-utils';
 import PageContainer from '../page-container';
 
 describe('Page Container', () => {
@@ -8,6 +9,13 @@ describe('Page Container', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    render(<PageContainer />);
+    // This is the old test
+    // render(<PageContainer />);
+
+    // New tests
+    const shallowWrapper = shallow(<PageContainer />);
+
+    expect(shallowWrapper.find('Fragment').length).toEqual(1);
+    expect(shallowWrapper.find('Styled(div)').length).toEqual(2);
   });
 });
