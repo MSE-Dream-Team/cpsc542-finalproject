@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import MenuItem from '../menu-item';
@@ -15,7 +15,6 @@ describe('Menu Item', () => {
     // New tests
     const shallowWrapper = shallow(<MenuItem to="/wow" />);
 
-    console.log(shallowWrapper.debug());
     expect(shallowWrapper.find('Link').length).toEqual(1);
     expect(shallowWrapper.find('.css-1yu82wf').length).toEqual(1);
     expect(shallowWrapper.find('Link[to="/wow"]').exists()).toBe(true);

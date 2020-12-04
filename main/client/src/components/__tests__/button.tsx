@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import Button from '../button';
@@ -15,7 +15,6 @@ describe('Button', () => {
     // New Test
     const shallowWrapper = shallow(<Button className='test-button'>Test button</Button>);
 
-    console.log(shallowWrapper.debug());
     expect(shallowWrapper.find('button').text()).toEqual("Test button");
     expect(shallowWrapper.find('button').length).toEqual(1);
   });

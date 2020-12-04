@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import LaunchDetail from '../launch-detail';
@@ -27,7 +27,6 @@ describe('Launch Detail View', () => {
         />
     );
 
-    console.log(shallowWrapper.debug());
     expect(shallowWrapper.find('Styled(div)').length).toEqual(1);
     expect(shallowWrapper.find('h3').length).toEqual(1);
     expect(shallowWrapper.find('h5').length).toEqual(1);

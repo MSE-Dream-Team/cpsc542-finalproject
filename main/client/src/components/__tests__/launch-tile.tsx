@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import LaunchTile from '../launch-tile';
@@ -36,7 +36,6 @@ describe('Launch Tile', () => {
         />
     );
 
-    console.log(shallowWrapper.debug());
     expect(shallowWrapper.find('Styled(Link)').length).toEqual(1);
     expect(shallowWrapper.find('h3').length).toEqual(1);
     expect(shallowWrapper.find('h5').length).toEqual(1);

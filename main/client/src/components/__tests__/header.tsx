@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import Header from '../header';
@@ -16,7 +16,6 @@ describe('Header', () => {
     // New tests
     const shallowWrapper = shallow(<Header />);
 
-    console.log(shallowWrapper.debug());
     expect(shallowWrapper.find('Styled(div)').length).toEqual(1);
     expect(shallowWrapper.find('Styled(h5)').length).toEqual(1);
     expect(shallowWrapper.find('h2').length).toEqual(1);
