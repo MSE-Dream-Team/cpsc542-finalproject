@@ -1,4 +1,6 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
+import { shallow, mount } from 'enzyme';
 
 import {
   renderApollo,
@@ -28,8 +30,14 @@ describe('Cart Page', () => {
   afterEach(cleanup);
 
   it('renders with message for empty carts', () => {
+
     const { getByTestId } = renderApollo(<Cart />, { cache });
+
+    // const mountWrapper = mount(<Cart />);
+
     return waitForElement(() => getByTestId('empty-message'));
+
+
   });
 
   it('renders cart', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import {
   renderApollo,
@@ -28,7 +28,7 @@ const mockLaunch = {
 const mockMe = {
   __typename: 'User',
   id: 1,
-  email: 'a@a.a',
+  email: 'mse-mock-user@test.com',
   trips: [mockLaunch],
 };
 
@@ -45,17 +45,16 @@ describe('Profile Page', () => {
     ];
 
     // This is the old test
-
-    // const { getByText } = renderApollo(<Profile />, { mocks });
-    //
+    
+    const { getByText } = renderApollo(<Profile />, { mocks });
     // // if the profile renders, it will have the list of missions booked
-    // await waitForElement(() => getByText(/test mission/i));
+    await waitForElement(() => getByText(/test mission/i));
 
     // This is the new enzyme test
-    const shallowWrapper = shallow(<Profile />);
-    const mountWrapper = mount(<Profile />);
-    const renderWrapper = render(<Profile />);
+    // const shallowWrapper = shallow(<Profile />, { mocks });
+    // console.log(shallowWrapper.debug());
 
-    expect(renderWrapper.find('h1').text()).toEqual("My Trips");
+
+    //expect(shallowWrapper.find('h1').text()).toEqual("My Trips");
   });
 });
