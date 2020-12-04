@@ -24,7 +24,7 @@ describe("Selenium Login Tests", () => {
 
   // close the driver after all tests have completed
   afterAll(async () => {
-    // await driver.close();
+    await driver.close();
   }, 10000);
 
   // finds button by href value
@@ -49,19 +49,26 @@ describe("Selenium Login Tests", () => {
 
     await new Promise((res) =>
       setTimeout(() => {
-        console.log("Why don't I run?");
         expect(true).toBe(true);
         res();
       }, 1000)
     ); // wait one second to avoid 'stale' error`
 
-    // add starLink to cart
+    // add starLink to cart (first button is add to cart)
+    driver.findElement(By.tagName("button")).click();
 
     // navigate to cart
     const cartButton = await getElementByHref("cart");
     if (!cartButton) throw new Error("Cart Button not found");
     cartButton.click();
 
-    // expect one item
+    // find div containing a list of cart items
+    const div = await driver.findElement(By.className("css-1on771l"));
+
+    // should only be one item in the cart, get its text
+    const text = await div.findElement(By.tagName("a")).getText();
+
+    // expect Starlink-15 in cart
+    expect(text).toEqual(expect.stringContaining("Starlink-15"));
   });
 });
