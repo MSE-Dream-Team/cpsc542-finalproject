@@ -1,6 +1,7 @@
 import React from 'react';
+import { shallow, mount, render } from 'enzyme';
 
-import { render, cleanup } from '../../test-utils';
+import { cleanup } from '../../test-utils';
 import Button from '../button';
 
 describe('Button', () => {
@@ -8,6 +9,14 @@ describe('Button', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    render(<Button>Hello World</Button>);
+    // This is the old test
+    // render(<Button>Hello World</Button>);
+
+    // New Test
+    const shallowWrapper = shallow(<Button className='test-button'>Test button</Button>);
+
+    console.log(shallowWrapper.debug());
+    expect(shallowWrapper.find('button').text()).toEqual("Test button");
+    expect(shallowWrapper.find('button').length).toEqual(1);
   });
 });
