@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import { renderApollo, cleanup } from '../../test-utils';
+import { renderApollo, renderApolloEnzyme, cleanup } from '../../test-utils';
 import ActionButton from '../action-button';
 import { cartItemsVar } from '../../cache';
 
@@ -19,6 +19,9 @@ describe('action button', () => {
   });
 
   it('shows correct label', () => {
+    // example of using renderApolloEnzyme method
+    const mountWrapper = renderApolloEnzyme(<ActionButton />)
+    console.log(mountWrapper.debug())
     const { getByText, container } = renderApollo(<ActionButton />);
     getByText(/add to cart/i);
 
