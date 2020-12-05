@@ -6,7 +6,7 @@ describe('Selenium Login Tests', () => {
   let driver;
 
   beforeEach(async () => {
-    driver = await new Builder().forBrowser('firefox').build(); // can be switched to any browser on your PATH var
+    driver = await new Builder().forBrowser('chrome').build(); // can be switched to any browser on your PATH var
 
     await driver.get("http://localhost:3000/"); // assumes server and client are active
 

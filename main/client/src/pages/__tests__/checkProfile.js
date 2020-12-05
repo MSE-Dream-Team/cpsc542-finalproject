@@ -3,11 +3,23 @@ const { Builder, By, Key, until } = require('selenium-webdriver')
 const assert = require('assert')
 
 describe('Check Profile', function() {
-  this.timeout(30000)
   let driver
   let vars
   beforeEach(async function() {
-    driver = await new Builder().forBrowser('chrome').build()
+    driver = await new Builder().forBrowser("chrome").build(); // can be switched to any browser on your PATH var
+
+    await driver.get("http://localhost:3000/"); // assumes server and client are active
+
+    // set window size
+    await driver.manage().window().setRect(1750, 1000);
+
+    // find email field, click and enter arbitrary email
+    await driver.findElement(By.name("email")).click();
+    await driver.findElement(By.name("email")).sendKeys("test@test.com");
+
+    // click login button
+    await driver.findElement(By.tagName("button")).click(); // login button
+  
     vars = {}
   })
   afterEach(async function() {
@@ -20,9 +32,14 @@ describe('Check Profile', function() {
     await driver.get("http://localhost:3000/")
     // 2 | setWindowSize | 1792x1003 | 
     await driver.manage().window().setRect(1792, 1003)
-    // 3 | click | css=.css-1yu82wf:nth-child(3) path:nth-child(1) | 
-    await driver.findElement(By.css(".css-1yu82wf:nth-child(3) path:nth-child(1)")).click()
+    //pre-3 | waitForElementPresent | .css-1yu82wf:nth-child(3) | 30000
+    await driver.wait(until.elementLocated(By.css(".css-1yu82wf:nth-child(3)")), 30000)
+    // 3 | click | .css-1yu82wf:nth-child(3)| 
+    await driver.findElement(By.css(".css-1yu82wf:nth-child(3)")).click()
+    //pre-3 | waitForElementPresent | .css-1yu82wf:nth-child(3) | 30000
+    await driver.wait(until.elementLocated(By.css("h2")), 30000)
     // 4 | assertText | css=h2 | My Trips
     assert(await driver.findElement(By.css("h2")).getText() == "My Trips")
   })
 })
+ 
