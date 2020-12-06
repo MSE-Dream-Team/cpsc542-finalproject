@@ -1,7 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import { renderApollo, renderApolloEnzyme, cleanup } from '../../test-utils';
+import { renderApolloEnzyme, cleanup } from '../../test-utils';
 import ActionButton from '../action-button';
 import { cartItemsVar } from '../../cache';
 
@@ -10,29 +10,26 @@ describe('action button', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    const { getByTestId } = renderApollo(<ActionButton />);
-    const shallowWrapperTrue = shallow(<ActionButton isBooked={true} id={'1'}/>);
-    const shallowWrapperFalse = shallow(<ActionButton isBooked={false} id={'2'}/>);
-    expect(shallowWrapperTrue.text()).toEqual('<CancelTripButton />')
-    expect(shallowWrapperFalse.text()).toEqual('<ToggleTripButton />')
-    expect(getByTestId('action-button')).toBeTruthy();
+    let shallowWrapper = shallow(<ActionButton isBooked={true} id={'1'}/>);
+    expect(shallowWrapper.find('CancelTripButton').length).toEqual(1);
+    
+    shallowWrapper = shallow(<ActionButton isBooked={false} id={'2'}/>);
+    expect(shallowWrapper.find('ToggleTripButton').length).toEqual(1);
   });
 
   it('shows correct label', () => {
     // example of using renderApolloEnzyme method
-    const mountWrapper = renderApolloEnzyme(<ActionButton />)
-    console.log(mountWrapper.debug())
-    const { getByText, container } = renderApollo(<ActionButton />);
-    getByText(/add to cart/i);
+    let mountWrapper = renderApolloEnzyme(<ActionButton />)
+    expect(mountWrapper.find('.css-wwcn44').text()).toEqual("Add to Cart")
 
     // rerender with different props to same container
     cartItemsVar(['1']);
-    renderApollo(<ActionButton id="1" />, { container });
-    getByText(/remove from cart/i);
-    cartItemsVar([]);
+    mountWrapper = renderApolloEnzyme(<ActionButton id="1"/>);
+    expect(mountWrapper.find('.css-wwcn44').text()).toEqual("Remove from Cart");
 
     // rerender with different props to same container
-    renderApollo(<ActionButton isBooked={true} />, { container });
-    getByText(/cancel this trip/i);
+    cartItemsVar([]);
+    mountWrapper = renderApolloEnzyme(<ActionButton isBooked={true}/>);
+    expect(mountWrapper.find('.css-wwcn44').text()).toEqual("Cancel This Trip");
   });
 });

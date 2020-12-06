@@ -1,9 +1,8 @@
 import React from 'react';
 
 import {
-  renderApollo,
-  cleanup,
-  waitForElement,
+  renderApolloEnzyme,
+  cleanup
 } from '../../test-utils';
 import CartItem, { GET_LAUNCH } from '../cart-item';
 
@@ -25,7 +24,7 @@ describe('cart item', () => {
   // automatically unmount and cleanup DOM after the test is finished.
   afterEach(cleanup);
 
-  it('queries item and renders without error', () => {
+  it('queries item and renders without error', async () => {
     let mocks = [
       {
         request: { query: GET_LAUNCH, variables: { launchId: '1' } },
@@ -35,32 +34,39 @@ describe('cart item', () => {
 
     // since we know the name of the mission, and know that name
     // will be rendered at some point, we can use getByText
-    const { getByText } = renderApollo(<CartItem launchId={'1'} />, {
-      mocks,
-      addTypename: false,
-    });
+    const mountWrapper = renderApolloEnzyme(      
+      <CartItem launchId={'1'} />,
+      { mocks, addTypename: false },
+    );
 
-    // check the loading state
-    getByText(/loading/i);
+    expect(mountWrapper.find('CartItem').text()).toEqual('Loading...')
 
-    return waitForElement(() => getByText(/test mission/i));
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    mountWrapper.update();
+
+    expect(mountWrapper.find('LaunchTile').exists()).toBe(true)
   });
 
-  it('renders with error state', () => {
+  it('renders with error state', async () => {
     let mocks = [
       {
-        request: { query: GET_LAUNCH, variables: { launchId: 1 } },
+        request: { query: GET_LAUNCH, variables: { launchId: '1' } },
         error: new Error('aw shucks'),
       },
     ];
 
     // since we know the error message, we can use getByText
     // to recognize the error
-    const { getByText } = renderApollo(<CartItem launchId={'1'} />, {
-      mocks,
-      addTypename: false,
-    });
+    const mountWrapper = renderApolloEnzyme(      
+      <CartItem launchId={'1'} />,
+      { mocks, addTypename: false },
+    );
 
-    waitForElement(() => getByText(/error: aw shucks/i));
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    mountWrapper.update();
+
+    expect(mountWrapper.find('CartItem').text()).toEqual('ERROR: aw shucks')
   });
 });
