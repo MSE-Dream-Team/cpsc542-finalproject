@@ -93,6 +93,7 @@ describe('Cart Page', () => {
 
     // Checks for cart
     expect(mountWrapper.exists('CartItem')).toBe(true);
+    expect(mountWrapper.exists('BookTrips')).toBe(true);
     expect(mountWrapper.exists('[launchId="1"]')).toBe(true);
     expect(mountWrapper.exists('[data-testid="book-button"]')).toBe(true);
     const bookAllText = "Book All";
