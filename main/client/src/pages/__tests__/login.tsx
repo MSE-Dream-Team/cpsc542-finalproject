@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   renderApollo,
+  renderApolloEnzyme,
   cleanup,
   fireEvent,
   waitForElement,
@@ -34,20 +35,38 @@ describe('Login Page', () => {
       },
     ];
 
-    const {getByText, getByTestId} = await renderApollo(<Login />, {
-      mocks,
-      cache,
-    });
+    // const {getByText, getByTestId} = await renderApollo(<Login />, {
+    //   mocks,
+    //   cache,
+    // });
+    //
+    // fireEvent.change(getByTestId('login-input'), {
+    //   target: {value: 'a@a.a'},
+    // });
+    //
+    // fireEvent.click(getByText(/log in/i));
+    //
+    // // login is done if loader is gone
+    // await waitForElement(() => getByText(/log in/i));
+    //
+    // expect(isLoggedInVar()).toBeTruthy();
 
-    fireEvent.change(getByTestId('login-input'), {
-      target: {value: 'a@a.a'},
-    });
 
-    fireEvent.click(getByText(/log in/i));
+    const mountWrapper = renderApolloEnzyme(<Login />, {mocks, cache});
+    console.log(mountWrapper.debug());
+    const input = mountWrapper.find('input');
 
-    // login is done if loader is gone
-    await waitForElement(() => getByText(/log in/i));
+    input.simulate('onChange', { target: { value: 'a@a.a' } });
+    mountWrapper.update();
+    console.log(mountWrapper.debug());
 
-    expect(isLoggedInVar()).toBeTruthy();
+
+    mountWrapper.find('button').simulate('click');
+    mountWrapper.update();
+
+    console.log(mountWrapper.debug());
+
+
+
   });
 });

@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 // this adds custom jest matchers from jest-dom
 import '@testing-library/jest-dom/extend-expect';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { shallow, mount } from 'enzyme';
 
 type RenderApolloOptions = {
   mocks?: MockedResponse[],
@@ -31,5 +32,23 @@ const renderApollo = (
   );
 };
 
+const renderApolloEnzyme = (
+  node: any,
+  { mocks, addTypename, defaultOptions, cache, resolvers, ...options }: RenderApolloOptions = {},
+) => {
+  return mount(
+    <MockedProvider
+      mocks={mocks}
+      addTypename={false}
+      defaultOptions={defaultOptions}
+      cache={cache}
+      resolvers={resolvers}
+    >
+      {node}
+    </MockedProvider>,
+    options,
+  );
+};
+
 export * from '@testing-library/react';
-export { renderApollo };
+export { renderApollo, renderApolloEnzyme };

@@ -19,7 +19,7 @@ const Cart: React.FC<CartProps> = () => {
     GET_CART_ITEMS
   );
 
-  if (loading) return <Loading />;
+   if (loading) return <Loading />;
   if (error) return <p>ERROR: {error.message}</p>;
 
   return (

@@ -1,8 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import toJSON from 'enzyme-to-json';
 
 import {
   renderApollo,
+  renderApolloEnzyme,
   cleanup,
   waitForElement,
 } from '../../test-utils';
@@ -28,7 +29,7 @@ const mockLaunch = {
 const mockMe = {
   __typename: 'User',
   id: 1,
-  email: 'mse-mock-user@test.com',
+  email: 'a@a.a',
   trips: [mockLaunch],
 };
 
@@ -45,16 +46,18 @@ describe('Profile Page', () => {
     ];
 
     // This is the old test
-    
-    const { getByText } = renderApollo(<Profile />, { mocks });
-    // // if the profile renders, it will have the list of missions booked
-    await waitForElement(() => getByText(/test mission/i));
+
+    //const { getByText } = renderApollo(<Profile />, { mocks: mocks });
+    // if the profile renders, it will have the list of missions booked
+    //await waitForElement(() => getByText(/test mission/i));
 
     // This is the new enzyme test
-    // const shallowWrapper = shallow(<Profile />, { mocks });
-    // console.log(shallowWrapper.debug());
+    const mountWrapper = renderApolloEnzyme(<Profile />, { mocks });
+    await waitForElement(() => {
+        expect(mountWrapper.exists('Profile')).toBe(true);
+    });
+    console.log(mountWrapper.debug());
 
 
-    //expect(shallowWrapper.find('h1').text()).toEqual("My Trips");
   });
 });

@@ -2,10 +2,12 @@ import React from 'react';
 
 import {
   renderApollo,
+  renderApolloEnzyme,
   cleanup,
   waitForElement,
 } from '../../test-utils';
 import Launch, { GET_LAUNCH_DETAILS } from '../launch';
+
 
 const mockLaunch = {
   __typename: 'Launch',
@@ -38,10 +40,28 @@ describe('Launch Page', () => {
         result: { data: { launch: mockLaunch } },
       },
     ];
+
+    // Old test
+
     const { getByText } = await renderApollo(<Launch launchId={1} />, {
       mocks,
       resolvers: {}
     });
     await waitForElement(() => getByText(/test mission/i));
+
+    // New enzyme test
+
+    const { mountWrapper } = await renderApolloEnzyme(<Launch launchId={1} />, {
+      mocks,
+      resolvers: {}
+    });
+    await waitForElement(() => getByText(/test mission/i));
+
+
+    console.log(mountWrapper);
+
+    // New enzyme test
+
+
   });
 });
