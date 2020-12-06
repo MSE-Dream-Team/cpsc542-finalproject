@@ -53,16 +53,24 @@ describe('Login Page', () => {
 
 
     const mountWrapper = renderApolloEnzyme(<Login />, {mocks, cache});
+    expect(isLoggedInVar()).toBeFalsy();
+
     console.log(mountWrapper.debug());
-    const input = mountWrapper.find('input');
+    //const input = mountWrapper.find('.css-wotvke');
 
-    input.simulate('onChange', { target: { value: 'a@a.a' } });
-    mountWrapper.update();
+    //input.simulate('change', { target: { value: 'a@a.a' } });
+    mountWrapper.find('.css-wotvke').simulate('change', { target: { value: 'a@a.a' } });
+    //await new Promise(resolve => setTimeout(resolve, 0));
+    //mountWrapper.update();
+    console.log(mountWrapper.find('.css-wotvke').text());
     console.log(mountWrapper.debug());
 
 
-    mountWrapper.find('button').simulate('click');
+    mountWrapper.find('.css-wwcn44').simulate('click');
+    await new Promise(resolve => setTimeout(resolve, 0));
+    //await waitForElement(() => getByText(/log in/i));
     mountWrapper.update();
+    expect(isLoggedInVar()).toBeTruthy();
 
     console.log(mountWrapper.debug());
 

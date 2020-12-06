@@ -43,24 +43,39 @@ describe('Launch Page', () => {
 
     // Old test
 
-    const { getByText } = await renderApollo(<Launch launchId={1} />, {
-      mocks,
-      resolvers: {}
-    });
-    await waitForElement(() => getByText(/test mission/i));
+    // const { getByText } = await renderApollo(<Launch launchId={1} />, {
+    //   mocks,
+    //   resolvers: {}
+    // });
+    // await waitForElement(() => getByText(/test mission/i));
 
     // New enzyme test
 
-    const { mountWrapper } = await renderApolloEnzyme(<Launch launchId={1} />, {
+    const mountWrapper = renderApolloEnzyme(<Launch launchId={1} />, {
       mocks,
       resolvers: {}
     });
-    await waitForElement(() => getByText(/test mission/i));
+    await new Promise(resolve => setTimeout(resolve, 0));
+    mountWrapper.update();
+
+    // expect page to render correctly
+    expect(mountWrapper.exists('h2')).toBe(true);
+    expect(mountWrapper.exists('LaunchDetail')).toBe(true);
+    expect(mountWrapper.exists('h3')).toBe(true);
+    expect(mountWrapper.exists('CancelTripButton')).toBe(true);
+    expect(mountWrapper.find('.css-gfwuup').exists('h5')).toBe(true);
+    expect(mountWrapper.exists('[data-testid="action-button"]')).toBe(true);
+
+    // expect correct mission to be present via mocked response
+    const h2Text = mockLaunch.mission.name;
+    const h3Text = mockLaunch.rocket.name;
+    const h5text = mockLaunch.site;
+
+    expect(mountWrapper.find('h2').text()).toBe(h2Text);
+    expect(mountWrapper.find('h3').text()).toContain(h3Text);
+    expect(mountWrapper.find('.css-gfwuup').find('h5').text()).toBe(h5text);
 
 
-    console.log(mountWrapper);
-
-    // New enzyme test
 
 
   });

@@ -3,6 +3,7 @@ import { InMemoryCache } from '@apollo/client';
 
 import {
   renderApollo,
+  renderApolloEnzyme,
   cleanup,
   waitForElement,
 } from '../../test-utils';
@@ -48,10 +49,38 @@ describe('Launches Page', () => {
         },
       },
     ];
-    const { getByText } = await renderApollo(<Launches />, {
-      mocks,
-      cache,
+
+    // Old existing test
+
+    // const { getByText } = await renderApollo(<Launches />, {
+    //   mocks,
+    //   cache,
+    // });
+    // await waitForElement(() => getByText(/test mission/i));
+
+    // New enzyme test
+
+    const mountWrapper = renderApolloEnzyme(<Launches />, {
+        mocks,
+        cache
     });
-    await waitForElement(() => getByText(/test mission/i));
+    await new Promise(resolve => setTimeout(resolve, 0));
+    mountWrapper.update();
+
+    // expect page to render correctly
+    expect(mountWrapper.exists('h2')).toBe(true);
+    expect(mountWrapper.exists('LaunchTile')).toBe(true);
+    expect(mountWrapper.exists('h3')).toBe(true);
+    expect(mountWrapper.find('.css-10q0vj5').exists('h5')).toBe(true);
+
+    // expect correct mission to be present via mocked response
+    const h2Text = "Space Explorer";
+    const h3Text = mockLaunch.mission.name;
+    const h5text = mockLaunch.rocket.name;
+
+    expect(mountWrapper.find('h2').text()).toBe(h2Text);
+    expect(mountWrapper.find('h3').text()).toContain(h3Text);
+    expect(mountWrapper.find('.css-10q0vj5').find('h5').text()).toBe(h5text);
+
   });
 });

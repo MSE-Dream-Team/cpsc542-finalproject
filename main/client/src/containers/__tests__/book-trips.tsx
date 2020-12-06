@@ -1,13 +1,12 @@
 import React from 'react';
 
 import {
-  renderApollo,
-  cleanup,
-  fireEvent,
-  waitForElement,
+  renderApolloEnzyme,
+  cleanup
 } from '../../test-utils';
 import BookTrips, { BOOK_TRIPS } from '../book-trips';
 import { GET_LAUNCH } from '../cart-item';
+import { cartItemsVar } from '../../cache';
 
 const mockLaunch = {
   __typename: 'Launch',
@@ -28,8 +27,8 @@ describe('book trips', () => {
   afterEach(cleanup);
 
   it('renders without error', () => {
-    const { getByTestId } = renderApollo(<BookTrips cartItems={[]} />);
-    expect(getByTestId('book-button')).toBeTruthy();
+    const mountWrapper = renderApolloEnzyme(<BookTrips cartItems={[]} />);
+    expect(mountWrapper.find('.css-wwcn44').text()).toEqual("Book All")
   });
 
   it('completes mutation and shows message', async () => {
@@ -48,20 +47,40 @@ describe('book trips', () => {
         result: { data: { launch: mockLaunch } },
       },
     ];
-    const { getByTestId } = renderApollo(
+    const mountWrapper = renderApolloEnzyme(      
       <BookTrips cartItems={['1']} />,
       { mocks, addTypename: false },
     );
 
-    fireEvent.click(getByTestId('book-button'));
+    mountWrapper.find('.css-wwcn44').simulate('click');
+    
+    await new Promise(resolve => setTimeout(resolve, 0));
 
-    // Let's wait until our mocked mutation resolves and
-    // the component re-renders.
-    // getByTestId throws an error if it cannot find an element with the given ID
-    // and waitForElement will wait until the callback doesn't throw an error
-    await waitForElement(() => getByTestId('message'));
+    mountWrapper.update();
+
+    expect(mountWrapper.find('[data-testid="message"]').exists()).toBe(true)
   });
 
-  // >>>> TODO
-  it('correctly updates cache', () => {});
+  it('correctly updates cache', async () => {
+    let mocks = [
+      {
+        request: { query: BOOK_TRIPS, variables: { launchIds: ['1'] } },
+        result: {
+          data: {
+            bookTrips: [{ success: true, message: 'success!', launches: [] }],
+          },
+        },
+      }
+    ]
+    cartItemsVar(['1']);
+    const mountWrapper = renderApolloEnzyme(      
+      <BookTrips cartItems={['1']} />,
+      { mocks, addTypename: false },
+    );
+    mountWrapper.find('.css-wwcn44').simulate('click');
+    
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(cartItemsVar().length).toEqual(0)
+  });
 });

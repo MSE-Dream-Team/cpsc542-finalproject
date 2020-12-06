@@ -4,7 +4,7 @@ import {
   renderApollo,
   renderApolloEnzyme,
   cleanup,
-  waitForElement,
+  waitForElement
 } from '../../test-utils';
 import Cart from '../cart';
 import { GET_LAUNCH } from '../../containers/cart-item';
@@ -54,6 +54,8 @@ describe('Cart Page', () => {
     expect(mountWrapper.exists('[data-testid="empty-message"]')).toBe(true);
     const emptyCartMessage = "No items in your cart";
     expect(mountWrapper.find('[data-testid="empty-message"]').children().text()).toBe(emptyCartMessage);
+
+    expect(mountWrapper.find({'data-testid':"empty-message"}).text()).toEqual("No items in your cart")
   });
 
   it('renders cart', async () => {
@@ -77,9 +79,6 @@ describe('Cart Page', () => {
     const mountWrapper = renderApolloEnzyme(<Cart />, { mocks, cache } );
     await new Promise(resolve => setTimeout(resolve, 0));
     mountWrapper.update();
-
-    console.log(mountWrapper.debug());
-
     // Checks that the page renders the basic components
     expect(mountWrapper.exists('Cart')).toBe(true);
     expect(mountWrapper.exists('Styled(div)')).toBe(true);
@@ -100,7 +99,6 @@ describe('Cart Page', () => {
     expect(mountWrapper.find('button').text()).toBe(bookAllText);
 
 
-
-
+    expect(mountWrapper.find({'data-testid':"book-button", 'className': "css-wwcn44"}).text()).toEqual("Book All")
   });
 });
