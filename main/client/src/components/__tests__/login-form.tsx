@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { cleanup } from '../../test-utils';
 import LoginForm from '../login-form';
@@ -15,12 +15,18 @@ describe('Login Form - using enzyme', () => {
 
     // This is the new enzyme test
     const shallowWrapper = shallow(<LoginForm />);
-    const mountWrapper = mount(<LoginForm />);
-    const renderWrapper = render(<LoginForm />);
 
-    expect(mountWrapper.find('div').length).toEqual(1);
+    expect(shallowWrapper.exists('Styled(div)')).toBe(true);
+    expect(shallowWrapper.exists('Styled(header)')).toBe(true);
+    expect(shallowWrapper.find('Styled(form)').exists('Styled(input)')).toBe(true);
+    expect(shallowWrapper.find('Styled(button)').exists('Styled(button)')).toBe(true);
+
+    const logInText = shallowWrapper.find('Styled(button)').find('Styled(button)').children().text();
+    expect(logInText).toBe("Log in");
+
     expect(shallowWrapper.find('[data-testid="login-input"]').exists()).toBe(true);
-    expect(renderWrapper.find('button').text()).toEqual("Log in");
-    expect(renderWrapper.find('h1').text()).toEqual("Space Explorer");
+
+    const h1Text = shallowWrapper.find('Styled(h1)').children().text();
+    expect(h1Text).toBe("Space Explorer");
   });
 });
